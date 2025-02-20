@@ -13,6 +13,7 @@ const Generator = () => {
   const [translation, setTranslation] = useState([]);
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const link = 'https://developer.chrome.com/docs/ai/get-started';
 
   const languages = [
@@ -96,11 +97,13 @@ const Generator = () => {
           },
         ]);
         setDisplaySummary(false);
+        setIsLoading(true);
       } catch (err) {
         setError('Failed to summarize text.');
         console.log(err);
       }
     }
+    setIsLoading(false);
   };
 
   const handleTranslate = async () => {
@@ -133,12 +136,14 @@ const Generator = () => {
         },
       ]);
       setError('');
+      setIsLoading(true);
 
       console.log(translation);
     } catch (err) {
       setError(`Failed to translate text. `);
       console.log(err);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -213,6 +218,7 @@ const Generator = () => {
               </a>
             </div>
           )}
+          {isLoading && <div>Loading...</div>}
         </div>
         <div className=" w-full border-2 border-neutral-600 rounded-2xl flex items-start sm:items-center justify-between p-4 md:p-6 sm:flex-row flex-col outline-yellow-500 ">
           <textarea
